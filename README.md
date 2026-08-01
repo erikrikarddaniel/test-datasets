@@ -65,6 +65,12 @@ Provided in three forms:
 
 Sequence IDs are kept as GTDB's native `ACCESSION~CONTIG` form. Used by the `test_gtdb` Nextflow profile (`conf/test_gtdb.config` in the pipeline repo) and its pipeline-level nf-tests, which exercise the raxtax prefilter on real, full-length sequence data rather than the small structural fixtures used elsewhere.
 
+### Barrnap archaeal rRNA HMM database
+
+`barrnap_arc.hmm`: [Barrnap](https://github.com/tseemann/barrnap)'s bundled archaeal rRNA HMM database, extracted unmodified from `/usr/local/lib/barrnap/db/arc.hmm` inside the `quay.io/biocontainers/barrnap:0.9--hdfd78af_4` container (`docker cp`, no rebuild). A multi-profile HMMER3 file containing four separately-named profiles (`16S_rRNA` [Rfam RF01959], `23S_rRNA`, `5S_rRNA` [Rfam RF00001], `5_8S_rRNA` [Rfam RF00002]).
+
+Used as the default `--hmm` value (with `--hmm_name 16S_rRNA`) for the pipeline's unaligned-input support: unaligned sequences are aligned via `hmmalign` against a single profile fetched from this database with `hmmfetch`, before continuing through the rest of the pipeline as a normal alignment. Paired with the `gtdb_archaea_16s_unaligned.fasta` fixture above (same sequences as the pre-aligned GTDB dataset, letting the two be cross-checked against each other) in the `test_gtdb_unaligned` profile.
+
 ## Support
 
 For further information or help, don't hesitate to get in touch on our [Slack organisation](https://nf-co.re/join/slack) (a tool for instant messaging).
