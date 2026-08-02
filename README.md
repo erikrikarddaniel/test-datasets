@@ -71,6 +71,20 @@ Sequence IDs are kept as GTDB's native `ACCESSION~CONTIG` form. Used by the `tes
 
 Used as the default `--hmm` value (with `--hmm_name 16S_rRNA`) for the pipeline's unaligned-input support: unaligned sequences are aligned via `hmmalign` against a single profile fetched from this database with `hmmfetch`, before continuing through the rest of the pipeline as a normal alignment. Paired with the `gtdb_archaea_16s_unaligned.fasta` fixture above (same sequences as the pre-aligned GTDB dataset, letting the two be cross-checked against each other) in the `test_gtdb_unaligned` profile.
 
+### CHECKALIGNED module test fixture
+
+`checkaligned_test_unaligned.fasta`: three short synthetic sequences of different lengths (16/10/20 bp), used by `CHECKALIGNED`'s own test to confirm it correctly classifies non-uniform-length FASTA as unaligned (paired with the already-uniform-length `sativa_loo_test.fasta` fixture above for the aligned case).
+
+### Gap filter module test fixtures
+
+`gapfilter_test.fasta` + `gapfilter_test.tax`: four short synthetic sequences for `GAPFILTER`'s own test -- `SeqGood1` (fully populated, non-gap proportion 1.0), `SeqGood2` (non-gap proportion exactly 0.8), `SeqBad1` (0.3) and `SeqBad2` (0.0, all gaps). Covers both the pipeline's default `--min_nongap` threshold (0.3) and a stricter one (0.8), including the exactly-at-threshold boundary case (`>=`, not `>`).
+
+### Embedded-taxonomy module test fixtures
+
+`resolvetaxonomy_test_embedded.fasta`: two short synthetic sequences (`SeqA`, `SeqB`) with taxonomy embedded directly in their FASTA header, GTDB-style (`>id taxonomy;string`), for `RESOLVETAXONOMY`'s own test of deriving a taxonomy file from `--sequences` headers when no separate `--taxonomy` file is given.
+
+`resolvetaxonomy_test.tax`: a separate taxonomy file for the same two sequence names, but with deliberately *different* (and clearly distinguishable -- `Archaea` rather than `Bacteria`) lineages than what's embedded in `resolvetaxonomy_test_embedded.fasta`'s headers. Used to test that an explicitly provided `--taxonomy` file always wins over embedded header text, with a warning rather than silently using the wrong source.
+
 ## Support
 
 For further information or help, don't hesitate to get in touch on our [Slack organisation](https://nf-co.re/join/slack) (a tool for instant messaging).
